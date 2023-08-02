@@ -43,6 +43,10 @@ function copy(){
 
 exports.m = copy;
 
+//圖片打包
+function img_copy(){
+    return src(['images/*.*' , 'images/**/*.*']).pipe(dest('dist/images'))
+}
 
 //css 壓縮
 
@@ -60,7 +64,7 @@ const uglify = require('gulp-uglify');
 
 
 function minijs(){
- return  src('main.js')
+ return  src('js/*.js')
     .pipe(uglify())
     .pipe(dest('dist/js'))
 }
@@ -110,6 +114,7 @@ function watchfile(){
 exports.w = watchfile;
 
 
+<<<<<<< HEAD
 exports.html = includeHTML;
 
 function watchfiles() {
@@ -131,6 +136,11 @@ function browser(done) {
     watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload)).on('change', reload);
     done();
 }
+=======
+//同步瀏覽器
+const browserSync = require('browser-sync');
+const reload = browserSync.reload;
+>>>>>>> gulp
 
 
 function browser(done) {
@@ -143,6 +153,8 @@ function browser(done) {
     });
     watch(['*.html' , 'layout/*.html'], includeHTML).on('change' , reload)
     watch(['sass/*.scss' , 'sass/**/*.scss'], styleSass).on('change' , reload)
+    watch(['images/*.*' , 'images/**/*.*'], img_copy).on('change' , reload)
+    watch('js/*.js', minijs).on('change' , reload)
     done();
 }
 
@@ -152,6 +164,7 @@ exports.default = browser;
 exports.default = browser;
 
 
+//壓縮圖片
 const imagemin = require('gulp-imagemin');
 
 function min_images(){
@@ -166,9 +179,44 @@ function min_images(){
 exports.pic = min_images
 
 
+// es6 -> es5
+const babel = require('gulp-babel');
+
+function babel5() {
+    return src('js/*.js')
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(dest('dist/js'));
+}
+
+
+exports.es = babel5;
+
+
+//清除舊檔案
+const clean = require('gulp-clean');
+
+function clear() {
+  return src('dist' ,{ read: false ,allowEmpty: true })//不去讀檔案結構，增加刪除效率  / allowEmpty : 允許刪除空的檔案
+  .pipe(clean({force: true})); //強制刪除檔案 
+}
+
+exports.c = clear;
 
 
 
+
+
+
+
+//開發用
+exports.dev = series(parallel(includeHTML , styleSass , minijs , img_copy) , browser);
+
+
+
+//上線用
+exports.online = series(clear ,parallel(includeHTML , styleSass , babel5 , min_images))
 
 
 
