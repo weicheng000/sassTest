@@ -132,7 +132,7 @@ function browser(done) {
     done();
 }
 
-exports.default = browser;
+// exports.default = browser;
 
 
 const browserSync = require('browser-sync');
