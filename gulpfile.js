@@ -6,6 +6,9 @@ const {
     watch
 } = require('gulp');
 
+const browserSync = require('browser-sync');
+const reload = browserSync.reload;
+
 // console log
 function task(cb) {
     console.log('gulp ok');
@@ -110,14 +113,7 @@ function watchfiles() {
     watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload));
 }
 
-
-
-
 const webserver = series(browserSync, watchfiles);
-
-const browserSync = require('browser-sync');
-const reload = browserSync.reload;
-
 
 function browser(done) {
     browserSync.init({
@@ -131,12 +127,6 @@ function browser(done) {
     watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload)).on('change', reload);
     done();
 }
-
-// exports.default = browser;
-
-
-const browserSync = require('browser-sync');
-const reload = browserSync.reload;
 
 
 function browser(done) {
