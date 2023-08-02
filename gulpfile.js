@@ -98,6 +98,16 @@ exports.html = includeHTML;
 
 exports.html = includeHTML;
 
+function watchfiles() {
+    watch(['./sass/*.scss', './sass/**/*.scss'], series(styleSass, Reload));
+    watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload))
+}
+
+
+
+
+const webserver = series(browserSync, watchfiles);
+
 
 
 
