@@ -107,7 +107,7 @@ exports.html = includeHTML;
 
 function watchfiles() {
     watch(['./sass/*.scss', './sass/**/*.scss'], series(styleSass, Reload));
-    watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload))
+    watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload));
 }
 
 
@@ -115,6 +115,24 @@ function watchfiles() {
 
 const webserver = series(browserSync, watchfiles);
 
+const browserSync = require('browser-sync');
+const reload = browserSync.reload;
+
+
+function browser(done) {
+    browserSync.init({
+        server: {
+            baseDir: "./dist",
+            index: "index.html"
+        },
+        port: 3000
+    });
+    watch(['./sass/*.scss', './sass/**/*.scss'], series(styleSass, Reload)).on('change', reload);
+    watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload)).on('change', reload);
+    done();
+}
+
+exports.default = browser;
 
 
 
