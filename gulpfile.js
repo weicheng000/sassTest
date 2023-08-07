@@ -114,33 +114,9 @@ function watchfile(){
 exports.w = watchfile;
 
 
-<<<<<<< HEAD
-exports.html = includeHTML;
-
-function watchfiles() {
-    watch(['./sass/*.scss', './sass/**/*.scss'], series(styleSass, Reload));
-    watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload));
-}
-
-const webserver = series(browserSync, watchfiles);
-
-function browser(done) {
-    browserSync.init({
-        server: {
-            baseDir: "./dist",
-            index: "index.html"
-        },
-        port: 3000
-    });
-    watch(['./sass/*.scss', './sass/**/*.scss'], series(styleSass, Reload)).on('change', reload);
-    watch(['*.html', '**/*.html' , '!dist/*.html'], series(includeHTML, Reload)).on('change', reload);
-    done();
-}
-=======
 //同步瀏覽器
 const browserSync = require('browser-sync');
 const reload = browserSync.reload;
->>>>>>> gulp
 
 
 function browser(done) {
@@ -158,9 +134,6 @@ function browser(done) {
     done();
 }
 
-<<<<<<< HEAD
-exports.default = browser;
-=======
 exports.default = browser;
 
 
@@ -233,4 +206,3 @@ exports.online = series(clear ,parallel(includeHTML , styleSass , babel5 , min_i
 
 
 
->>>>>>> gulp
