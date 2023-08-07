@@ -115,10 +115,6 @@ exports.w = watchfile;
 
 
 //同步瀏覽器
-const browserSync = require('browser-sync');
-const reload = browserSync.reload;
-
-
 function browser(done) {
     browserSync.init({
         server: {
@@ -176,11 +172,6 @@ function clear() {
 }
 
 exports.c = clear;
-
-
-
-
-
 
 
 //開發用
